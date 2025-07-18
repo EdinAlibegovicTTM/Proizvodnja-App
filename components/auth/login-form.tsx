@@ -80,8 +80,8 @@ export function LoginForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Korisničko ime</Label>
-            <Input id="username" name="username" type="text" placeholder="Unesite korisničko ime" required />
+            <Label htmlFor="username">Email</Label>
+            <Input id="username" name="username" type="text" placeholder="Unesite email" required />
           </div>
 
           <div className="space-y-2">
