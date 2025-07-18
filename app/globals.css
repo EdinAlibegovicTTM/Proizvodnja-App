@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+
+  /* WhatsApp tema */
+  .theme-whatsapp {
+    --background: 11 100% 96%;
+    --foreground: 11 100% 6%;
+    --primary: 142 70% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 11 100% 91%;
+    --secondary-foreground: 11 100% 11%;
+    --muted: 11 100% 91%;
+    --muted-foreground: 11 50% 46%;
+    --accent: 142 70% 45%;
+    --accent-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 11 100% 6%;
+    --border: 11 82% 86%;
+    --input: 11 82% 86%;
+    --ring: 142 70% 45%;
+  }
+
+  /* Industrijska tema */
+  .theme-industrial {
+    --background: 210 11% 15%;
+    --foreground: 213 31% 91%;
+    --primary: 47 100% 50%;
+    --primary-foreground: 210 11% 15%;
+    --secondary: 210 11% 21%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 210 11% 21%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 47 100% 50%;
+    --accent-foreground: 210 11% 15%;
+    --card: 210 11% 18%;
+    --card-foreground: 213 31% 91%;
+    --border: 210 11% 25%;
+    --input: 210 11% 25%;
+    --ring: 47 100% 50%;
+  }
+
+  /* Prirodna tema */
+  .theme-nature {
+    --background: 120 60% 97%;
+    --foreground: 120 60% 7%;
+    --primary: 120 60% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 120 30% 90%;
+    --secondary-foreground: 120 60% 10%;
+    --muted: 120 30% 90%;
+    --muted-foreground: 120 30% 50%;
+    --accent: 120 60% 40%;
+    --accent-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 120 60% 7%;
+    --border: 120 30% 85%;
+    --input: 120 30% 85%;
+    --ring: 120 60% 40%;
+  }
+
+  /* Moderna tema */
+  .theme-modern {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+    --primary: 263 70% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 263 70% 50%;
+    --accent-foreground: 0 0% 98%;
+    --card: 240 10% 7%;
+    --card-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 263 70% 50%;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* QR Scanner styles */
+.qr-scanner {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.qr-scanner video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.qr-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border: 2px solid hsl(var(--primary));
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Drag and drop styles */
+.drag-item {
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.drag-item:active {
+  cursor: grabbing;
+}
+
+.drag-item.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.drop-zone {
+  min-height: 100px;
+  border: 2px dashed hsl(var(--border));
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.drop-zone.drag-over {
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
