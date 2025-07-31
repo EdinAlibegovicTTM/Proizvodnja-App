@@ -32,12 +32,17 @@ export function LoginForm() {
     const username = formData.get("username") as string
     const password = formData.get("password") as string
 
+    console.log('Login attempt:', { username, password })
+    console.log('Using Supabase client type:', typeof supabase)
+
     try {
       // Prava autentikacija preko Supabase
       const { data, error: loginError } = await supabase.auth.signInWithPassword({
         email: username,
         password,
       })
+      console.log('Login result:', { data, error: loginError })
+      
       if (loginError) {
         setError("Neispravno korisničko ime ili lozinka")
         setIsLoading(false)
@@ -49,6 +54,8 @@ export function LoginForm() {
         .select("username, role, permissions")
         .eq("email", username)
         .single()
+      console.log('User data result:', { userData, error: userError })
+      
       if (userError || !userData) {
         setError("Nije moguće dohvatiti podatke o korisniku")
         setIsLoading(false)
@@ -63,6 +70,7 @@ export function LoginForm() {
       })
       router.push("/dashboard")
     } catch (err) {
+      console.error('Login error:', err)
       setError("Greška pri prijavljivanju")
     } finally {
       setIsLoading(false)
