@@ -41,16 +41,7 @@ export function AdminDashboard() {
   const { user } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!user || user.role !== "admin") {
-      router.push("/dashboard")
-    }
-  }, [user, router])
-
-  if (!user || user.role !== "admin") {
-    return null // ili prikaz "Nemate pristup ovoj stranici"
-  }
-
+  // Svi hooks moraju biti na početku
   const [selectedModule, setSelectedModule] = useState("overview")
   const [audit, setAudit] = useState<any[]>([])
   const [auditLoading, setAuditLoading] = useState(false)
@@ -92,6 +83,16 @@ export function AdminDashboard() {
   const [header, setHeader] = useState(settings.header || '')
   const [footer, setFooter] = useState(settings.footer || '')
   const [printer, setPrinter] = useState(settings.printer || '')
+
+  useEffect(() => {
+    if (!user || user.role !== "admin") {
+      router.push("/dashboard")
+    }
+  }, [user, router])
+
+  if (!user || user.role !== "admin") {
+    return null // ili prikaz "Nemate pristup ovoj stranici"
+  }
 
   const handleSaveSettings = () => {
     const newSettings = { logoUrl, header, footer, printer }

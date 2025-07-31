@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,12 +12,27 @@ import { PonudaForm } from "@/components/ponude/ponuda-form"
 import { formatDate, formatCurrency } from "@/lib/utils"
 import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { PonudaList } from "@/components/ponude/ponuda-list"
+
+interface Ponuda {
+  id: number
+  brojPonude: string
+  qrKod: string
+  datum: Date
+  kupac: { naziv: string; rabat: number }
+  ukupanIznos: number
+  status: string
+  rokIsporuke: Date
+  stavke: Array<{ proizvod: string; kolicina: number; cijena: number }>
+}
 
 export default function PonudePage() {
   const { user, hasPermission } = useAuth()
   const router = useRouter()
+
+  // Svi hooks moraju biti na početku
+  const [activeTab, setActiveTab] = useState("lista")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedPonuda, setSelectedPonuda] = useState<Ponuda | null>(null)
 
   useEffect(() => {
     if (!user || !hasPermission("ponude")) {
@@ -29,18 +44,12 @@ export default function PonudePage() {
     return null // ili prikaz "Nemate pristup ovoj stranici"
   }
 
-  const [activeTab, setActiveTab] = useState("lista")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedPonuda, setSelectedPonuda] = useState<any>(null)
-  const [refreshPonude, setRefreshPonude] = useState(0)
-
   const handlePonudaSuccess = () => {
-    setRefreshPonude((r) => r + 1)
     setSelectedPonuda(null)
   }
 
   // Mock podatci - u stvarnoj aplikaciji iz baze
-  const ponude = [
+  const ponude: Ponuda[] = [
     {
       id: 1,
       brojPonude: "PON-2024-001",

@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     }
     const answer = await askDeepSeek(prompt, { system })
     return NextResponse.json({ answer })
-  } catch (err) {
-    return NextResponse.json({ error: "Greška pri komunikaciji sa AI" }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: "Greška pri obradi zahtjeva" }, { status: 500 })
   }
 } 

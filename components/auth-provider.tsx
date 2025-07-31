@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { useSupabase } from "@/lib/use-supabase"
 
 interface User {
   username: string
@@ -22,6 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const supabase = useSupabase()
 
   useEffect(() => {
     // Povuci session iz Supabase-a
@@ -34,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .select("username, role, permissions")
           .eq("email", session.user.email)
           .single()
-        if (userData) setUser(userData)
+        if (userData) setUser(userData as User)
       } else {
         setUser(null)
       }
@@ -47,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       listener?.subscription.unsubscribe()
     }
-  }, [])
+  }, [supabase])
 
   const login = (userData: User) => {
     setUser(userData)

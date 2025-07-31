@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Eye, EyeOff, LogIn } from "lucide-react"
-import { supabase } from "@/lib/supabase"
+import { useSupabase } from "@/lib/use-supabase"
 import { useAuth } from "@/components/auth-provider"
 import type { ButtonProps } from "@/components/ui/button"
 import { logActivityToSupabase } from "@/lib/utils"
@@ -21,6 +21,7 @@ export function LoginForm() {
   const [error, setError] = useState("")
   const router = useRouter()
   const { login } = useAuth()
+  const supabase = useSupabase()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -53,7 +54,7 @@ export function LoginForm() {
         setIsLoading(false)
         return
       }
-      login(userData)
+      login(userData as any)
       // Logovanje aktivnosti
       await logActivityToSupabase({
         action: "login",
@@ -117,8 +118,8 @@ export function LoginForm() {
 
         <div className="mt-6 text-sm text-muted-foreground">
           <p className="font-medium mb-2">Demo pristup:</p>
-          <p>Admin: admin / admin123</p>
-          <p>Korisnik: korisnik / korisnik123</p>
+          <p>Admin: admin@test.com / AsasE0111-</p>
+          <p>Korisnik: korisnik@test.com / korisnik123</p>
         </div>
       </CardContent>
     </Card>

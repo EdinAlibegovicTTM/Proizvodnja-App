@@ -12,28 +12,39 @@ import { OtpremnicaForm } from "@/components/blagajna/otpremnica-form"
 import { formatCurrency, formatDate } from "@/lib/utils"
 import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import { useSupabase } from "@/lib/use-supabase"
+
+interface Otpremnica {
+  id: string
+  brojOtpremnice: string
+  kupac: string
+  datum: string
+  ukupanIznos: number
+  depozit: number
+  zaUplatu: number
+  preuzeo: string
+  prevoznik: string
+  statusNaplate: string
+}
 
 export default function BlagajnaPage() {
   const { user, hasPermission } = useAuth()
   const router = useRouter()
+  const supabase = useSupabase()
+  
+  // Svi hooks moraju biti na početku
+  const [activeTab, setActiveTab] = useState("otpremnice")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [otpremnice, setOtpremnice] = useState<Otpremnica[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     if (!user || !hasPermission("blagajna")) {
       router.push("/dashboard")
     }
   }, [user, hasPermission, router])
-
-  if (!user || !hasPermission("blagajna")) {
-    return null // ili prikaz "Nemate pristup ovoj stranici"
-  }
-
-  const [activeTab, setActiveTab] = useState("otpremnice")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [otpremnice, setOtpremnice] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     const fetchOtpremnice = async () => {
@@ -49,7 +60,11 @@ export default function BlagajnaPage() {
       setLoading(false)
     }
     fetchOtpremnice()
-  }, [refresh])
+  }, [refresh, supabase])
+
+  if (!user || !hasPermission("blagajna")) {
+    return null // ili prikaz "Nemate pristup ovoj stranici"
+  }
 
   const handleSuccess = () => {
     setRefresh(r => r + 1)
@@ -76,17 +91,6 @@ export default function BlagajnaPage() {
       svrha: "Gorivo",
     },
   ]
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "naplaćeno":
-        return "default"
-      case "isporučeno-nenaplaćeno":
-        return "secondary"
-      default:
-        return "outline"
-    }
-  }
 
   const getStatusText = (status: string) => {
     switch (status) {

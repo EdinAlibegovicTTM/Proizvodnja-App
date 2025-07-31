@@ -15,29 +15,34 @@ import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 
+interface ProcesDorade {
+  id: string
+  masina: string
+  radnik: string
+  novi_paket: string
+  status: string
+  datum: string
+}
+
 export default function DoradaPage() {
   const { user, hasPermission } = useAuth()
   const router = useRouter()
+
+  // Svi hooks moraju biti na početku
+  const [activeTab, setActiveTab] = useState("dorada")
+  const [showQRScanner, setShowQRScanner] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [procesi, setProcesi] = useState<ProcesDorade[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [refresh, setRefresh] = useState(0)
+  const [editProces, setEditProces] = useState<ProcesDorade | null>(null)
 
   useEffect(() => {
     if (!user || !hasPermission("dorada")) {
       router.push("/dashboard")
     }
   }, [user, hasPermission, router])
-
-  if (!user || !hasPermission("dorada")) {
-    return null // ili prikaz "Nemate pristup ovoj stranici"
-  }
-
-  const [activeTab, setActiveTab] = useState("dorada")
-  const [showQRScanner, setShowQRScanner] = useState(false)
-  const [selectedQRData, setSelectedQRData] = useState("")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [procesi, setProcesi] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [refresh, setRefresh] = useState(0)
-  const [editProces, setEditProces] = useState<any | null>(null)
 
   useEffect(() => {
     const fetchProcesi = async () => {
@@ -55,8 +60,11 @@ export default function DoradaPage() {
     fetchProcesi()
   }, [refresh])
 
+  if (!user || !hasPermission("dorada")) {
+    return null // ili prikaz "Nemate pristup ovoj stranici"
+  }
+
   const handleQRScan = (data: string) => {
-    setSelectedQRData(data)
     setShowQRScanner(false)
     setActiveTab("dorada")
   }
@@ -67,7 +75,7 @@ export default function DoradaPage() {
     setActiveTab("procesi")
   }
 
-  const handleEdit = (proces: any) => {
+  const handleEdit = (proces: ProcesDorade) => {
     setEditProces(proces)
     setActiveTab("dorada")
   }

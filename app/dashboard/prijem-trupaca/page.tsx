@@ -14,28 +14,39 @@ import { useAuth } from "@/components/auth-provider"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 
+interface Trupac {
+  id: number
+  qrKod: string
+  brojPlocice: string
+  bojaPlocice: string
+  klasaTrupca: string
+  duzinaTrupca: number
+  precnikTrupca: number
+  m3: number
+  datumPrijema: Date
+  sumarija: string
+  status: string
+}
+
 export default function PrijemTrupacaPage() {
   const { user, hasPermission } = useAuth()
   const router = useRouter()
+
+  // Svi hooks moraju biti na početku
+  const [activeTab, setActiveTab] = useState("prijem")
+  const [showQRScanner, setShowQRScanner] = useState(false)
+  const [selectedQRData, setSelectedQRData] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [trupci, setTrupci] = useState<Trupac[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     if (!user || !hasPermission("prijem-trupaca")) {
       router.push("/dashboard")
     }
   }, [user, hasPermission, router])
-
-  if (!user || !hasPermission("prijem-trupaca")) {
-    return null // ili prikaz "Nemate pristup ovoj stranici"
-  }
-
-  const [activeTab, setActiveTab] = useState("prijem")
-  const [showQRScanner, setShowQRScanner] = useState(false)
-  const [selectedQRData, setSelectedQRData] = useState("")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [trupci, setTrupci] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     const fetchTrupci = async () => {
@@ -52,6 +63,10 @@ export default function PrijemTrupacaPage() {
     }
     fetchTrupci()
   }, [refresh])
+
+  if (!user || !hasPermission("prijem-trupaca")) {
+    return null // ili prikaz "Nemate pristup ovoj stranici"
+  }
 
   const handleQRScan = (data: string) => {
     setSelectedQRData(data)
