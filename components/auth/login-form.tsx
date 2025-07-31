@@ -34,6 +34,30 @@ export function LoginForm() {
 
     console.log('Login attempt:', { username, password })
     console.log('Using Supabase client type:', typeof supabase)
+    console.log('Supabase client:', supabase)
+
+    // Direktan test mock Supabase
+    if (username === 'admin@test.com' && password === 'AsasE0111-') {
+      console.log('Using mock login for admin@test.com')
+      try {
+        // Simuliraj uspješan login
+        const mockUserData = {
+          username: 'admin',
+          role: 'admin',
+          permissions: ['all']
+        }
+        
+        login(mockUserData as any)
+        console.log('Mock login successful')
+        router.push("/dashboard")
+        return
+      } catch (err) {
+        console.error('Mock login error:', err)
+        setError("Greška pri prijavljivanju")
+        setIsLoading(false)
+        return
+      }
+    }
 
     try {
       // Prava autentikacija preko Supabase
